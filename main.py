@@ -112,7 +112,7 @@ class NeuralNetwork:
             for weight in weights:
                 ax.bar(index[i] + j * bar_width / len(weights), weight, bar_width / len(weights), alpha=opacity,
                        color='b')
-                j = j + 1 % len(colors)
+                j = j + 1
             ax.bar(index[i] + bar_width, biases_data[i], bar_width, alpha=opacity, color='r')
             i = i + 1
 
@@ -125,6 +125,20 @@ class NeuralNetwork:
 
         plt.tight_layout()
         plt.show()
+
+    def print_Network(self):
+        layer_number = 1
+        output_str = ''
+        for layer in self.layers:
+            output_str = output_str + f'Layer {layer_number}: \n'
+            for neuron in layer:
+                output_str = output_str + f'Neuron {neuron.name} Weights: ('
+                for weight in neuron.weights:
+                    output_str = output_str + f'{weight}, '
+                output_str = output_str + f') Bias: {neuron.bias} \n'
+            output_str = output_str + '\n'
+            layer_number = layer_number + 1
+        print(output_str)
 
 
 # set custom weights
@@ -165,14 +179,17 @@ print("Output: ", output)
 print("All Layers: ", all_outputs)
 
 # bigger network
+# Layer 1
 p1 = Neuron(6, name='p1')
 p2 = Neuron(6, name='p2')
 p3 = Neuron(6, name='p3')
 p4 = Neuron(6, name='p4')
+# Layer 2
 q1 = Neuron(4, name='q1')
 q2 = Neuron(4, name='q2')
 q3 = Neuron(4, name='q3')
 q4 = Neuron(4, name='q4')
+# Layer 3
 r1 = Neuron(4, name='r1', activation='sigmoid')
 r2 = Neuron(4, name='r2', activation='sigmoid')
 r3 = Neuron(4, name='r3', activation='sigmoid')
@@ -185,6 +202,7 @@ bigger_network = NeuralNetwork([
 # bigger_network.save_weights()
 bigger_network.load_weights()
 bigger_network.plot_network()
+bigger_network.print_Network()
 
 output, all_outputs = bigger_network.forward([4, 7, 15, 2, -7, 3])
 print("Output: ", output)
